@@ -22,19 +22,6 @@ public class HikeData implements Serializable{
     private int days;
     private int months;
     private int years;
-    
- // Define a variable to store the property
-    private StringProperty filterCount = new SimpleStringProperty();
- 
-    // Define a getter for the property's value
-    public final String getFilterCount(){return filterCount.get();}
- 
-    // Define a setter for the property's value
-    public final void setFilterCount(String string){filterCount.set(string);}
- 
-     // Define a getter for the property itself
-    public StringProperty filterCountProperty() {return filterCount;}
-    
 
     public HikeData(){
     	this.hikeCounter = 0;

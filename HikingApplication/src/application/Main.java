@@ -85,7 +85,7 @@ public class Main extends Application {
 	public void createPaths(Stage window) {
 		IO io = new IO();
 
-		File homeFolder = new File("C:\\Users\\" + userProfile + "\\JustHike\\JustHike\\");
+		File homeFolder = new File("C:\\Users\\" + userProfile + "\\JustHike\\JustHike\\temp");
 
 		if(!homeFolder.exists() && !homeFolder.isFile()) {
 

@@ -18,8 +18,8 @@ import javafx.scene.control.TableView;
 public class IO {
 
 	static String userProfile = System.getProperty("user.name");
-	String lifetimePath =    "C:\\Users\\" + userProfile + "\\JustHike\\JustHike\\lifeTimeStats.txt";
-	String masterTablePath = "C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\masterTable.txt";
+	String lifetimePath =    "C:\\Users\\" + userProfile + "\\JustHike\\JustHike\\temp\\lifeTimeStats.txt";
+	String masterTablePath = "C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\temp\\masterTable.txt";
 
 	Writer writer = null;
 	HikeData d = new HikeData();
@@ -28,7 +28,7 @@ public class IO {
 	// Gets size of the List and then  	 
 	public void saveTable( String date, String state, String location, String trailName, double miles, int hours, int minutes) {
 
-		String tableFile = "C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\" + Table.state + "\\Table for " + Table.state + ".txt";
+		String tableFile = "C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\temp\\" + Table.state + "\\Table for " + Table.state + ".txt";
 		HikeData data = new HikeData();
 
 		try{
@@ -58,7 +58,7 @@ public class IO {
 	public void loadTable(){
 
 		try {
-			FileReader fr = new FileReader("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\" + Table.state + "\\Table for " + Table.state + ".txt");
+			FileReader fr = new FileReader("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\temp\\" + Table.state + "\\Table for " + Table.state + ".txt");
 			BufferedReader br = new BufferedReader(fr);
 			Scanner scan = new Scanner(fr);
 
@@ -147,7 +147,7 @@ public class IO {
 	public void saveStats(int hikes, double miles, int minutes, int hours, int days, int months, int years){			
 
 		try{
-			FileWriter fw = new FileWriter ("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\" + Table.state + "\\Stats for " + Table.state + ".txt");
+			FileWriter fw = new FileWriter ("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\temp\\" + Table.state + "\\Stats for " + Table.state + ".txt");
 			PrintWriter pw = new PrintWriter(fw);
 
 			d.setHikeCounter(hikes);
@@ -184,7 +184,7 @@ public class IO {
 
 		try{			 
 
-			FileReader fr = new FileReader("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\" + state + "\\Stats for " + state + ".txt");
+			FileReader fr = new FileReader("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\temp\\" + state + "\\Stats for " + state + ".txt");
 			BufferedReader br = new BufferedReader(fr);
 			Scanner scan = new Scanner(fr);
 			while(scan.hasNext()){
@@ -284,7 +284,7 @@ public class IO {
 
 		HikeData data = new HikeData();				
 
-		File file = new File("C:\\Users\\" + userProfile + "\\Desktop\\Trail CSV\\" + Table.comboSelection() + " Trails.csv");
+		File file = new File("C:\\Users\\" + userProfile + "\\Desktop\\Trail CSV\\temp\\" + Table.comboSelection() + " Trails.csv");
 		Writer writer = new BufferedWriter(new FileWriter(file));
 		String columns = "DATE" + "," + "HIKE LOCATION" + "," + "TRAIL HIKED" + "," + "MILES HIKED" +"\n";
 		writer.write(columns);

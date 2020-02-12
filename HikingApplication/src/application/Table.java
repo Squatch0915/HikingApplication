@@ -2,23 +2,23 @@ package application;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 import java.net.URL;
 import java.text.DecimalFormat;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -32,7 +32,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -44,8 +43,6 @@ public class Table  {
     static TableView<HikeData> table;
     TextField  locationInput, trailNameInput, milesInput, hoursInput, minutesInput, filterInput;
     static ObservableList<HikeData> hikeData;
-    private final String decimalPattern = "\\d{0,3}([\\.]\\d{0,2})?";
-	private final String integerPattern = "\\d*";
 	Button addButton, deleteButton;
 	static int hikes, hours, minutes, days, months , years, lifetimeHikes = 0;
 	static String state, date, location, trailName;
@@ -56,19 +53,17 @@ public class Table  {
 	static String userProfile = System.getProperty("user.name");
 	static ComboBox<String> combo = new ComboBox<String>();
 	static String stateCSV;
-	Text filterCountLabel;
+	Text filterCountLabel, filterMilesLabel, filterDaysLabel, filterHoursLabel;
 
 
     @SuppressWarnings("unchecked")
 	public Table(){
     	
     	//createPaths();
- 
-    	StackPane pane = new StackPane();
-    	
+
     	window = new Stage();
     	window.setResizable(false);
-		window.initModality(Modality.APPLICATION_MODAL); 
+		//window.initModality(Modality.APPLICATION_MODAL); 
         window.setTitle("JustHike");
 		window.initStyle(StageStyle.UTILITY);
 
@@ -155,38 +150,37 @@ public class Table  {
 //Location input
         locationInput = new TextField();
         locationInput.setPromptText("Location Hiked");
-        setToolTip(locationInput, new Tooltip(), "Enter the location of the hike");
+        new HelperFunctions().setToolTip(locationInput, new Tooltip(), "Enter the location of the hike");
 
 //trailname input
         trailNameInput = new TextField();
         
         trailNameInput.setPromptText("Trailname Hiked");
-        setToolTip(trailNameInput, new Tooltip(), "Enter the name of the hike");
-
+        new HelperFunctions().setToolTip(trailNameInput, new Tooltip(), "Enter the name of the hike");
 
 //miles input
         milesInput = new TextField();
         milesInput.setPromptText("Miles Hiked");
-        inputCheck(milesInput, decimalPattern); // limits input to number/decimals
-        setToolTip(milesInput, new Tooltip(), "Enter the miles hiked");
+        new HelperFunctions().inputCheck(milesInput, new HelperFunctions().decimalPattern); // limits input to number/decimals
+        new HelperFunctions().setToolTip(milesInput, new Tooltip(), "Enter the miles hiked");
 
 
 //hours input
         hoursInput = new TextField();
         hoursInput.setPromptText("Hours Hiked");
-		inputCheck(hoursInput, integerPattern);// limits input to number
-        setToolTip(hoursInput, new Tooltip(), "Enter the hours hiked");
+        new HelperFunctions().inputCheck(hoursInput, new HelperFunctions().integerPattern);// limits input to number
+        new HelperFunctions().setToolTip(hoursInput, new Tooltip(), "Enter the hours hiked");
 
 //minutes input
         minutesInput = new TextField();
         minutesInput.setPromptText("Minutes Hiked");
-		inputCheck(minutesInput, integerPattern);// limits input to number
-        setToolTip(minutesInput, new Tooltip(), "Enter the minutes hiked");
+        new HelperFunctions().inputCheck(minutesInput, new HelperFunctions().integerPattern);// limits input to number
+        new HelperFunctions().setToolTip(minutesInput, new Tooltip(), "Enter the minutes hiked");
         
 //Filter input
         filterInput = new TextField();
         filterInput.setPromptText("Filter Content");
-        setToolTip(filterInput, new Tooltip(), "Enter Data To Be Filtered");
+        new HelperFunctions().setToolTip(filterInput, new Tooltip(), "Enter Data To Be Filtered");
 
 //--------END OF INPUTFIELDS-----------------------------------------------------------------
         
@@ -208,7 +202,8 @@ public class Table  {
         	
         	lifetimeHikes++;
         	StateDisplayTab.totalLifetimeHikes = StateDisplayTab.totalLifetimeHikes + lifetimeHikes;
-        	deleteButton.setDisable(false);            addButtonClicked();
+        	deleteButton.setDisable(false);           
+        	addButtonClicked();
     		new IO().saveMasterTable(date, state, location, trailName, miles, hours, minutes);
 
             });
@@ -234,18 +229,27 @@ public class Table  {
 		filterCountLabel = new Text();
 		filterCountLabel.setFill(Color.WHITE);
 		filterCountLabel.setFont(Font.font(15));
-
-		Text resultLabel = new Text("Results Found ");
-		resultLabel.setFill(Color.WHITE);
-		resultLabel.setFont(Font.font(15));
+		
+		filterMilesLabel = new Text();
+		filterMilesLabel.setFill(Color.WHITE);
+		filterMilesLabel.setFont(Font.font(15));
+		
+		filterDaysLabel = new Text();
+		filterDaysLabel.setFill(Color.WHITE);
+		filterDaysLabel.setFont(Font.font(15));
+		
+		filterHoursLabel = new Text();
+		filterHoursLabel.setFill(Color.WHITE);
+		filterHoursLabel.setFont(Font.font(15));
 
         table = new TableView<>();
+        table.setMinHeight(600);
     	table.setEditable(true);
         table.setItems(getData()); // loads in the data to the table as observable list
         table.getColumns().addAll(dateColumn, stateColumn, locationColumn, trailNameColumn, milesColumn, hoursColumn, minutesColumn); // adds all the columns
-        table.setMinHeight(600);
         
         HBox upperInputPanel = new HBox();
+        HBox.setHgrow(upperInputPanel, Priority.ALWAYS);
         upperInputPanel.setAlignment(Pos.CENTER);
         upperInputPanel.setStyle("-fx-background-color: black");
         upperInputPanel.setPadding(new Insets(10,10,10,10));
@@ -253,6 +257,7 @@ public class Table  {
         upperInputPanel.getChildren().addAll(dp, combo,  locationInput);
             
         HBox lowerInputPanel = new HBox();
+        HBox.setHgrow(lowerInputPanel, Priority.ALWAYS);
         lowerInputPanel.setAlignment(Pos.CENTER);
         lowerInputPanel.setStyle("-fx-background-color: black");
         lowerInputPanel.setPadding(new Insets(10,10,10,10));
@@ -260,30 +265,52 @@ public class Table  {
         lowerInputPanel.getChildren().addAll(trailNameInput, milesInput, hoursInput, minutesInput);
         
         HBox filterPanel = new HBox();
+        HBox.setHgrow(filterPanel, Priority.ALWAYS);
         filterPanel.setAlignment(Pos.TOP_RIGHT);
         filterPanel.setStyle("-fx-background-color: black");
         filterPanel.setPadding(new Insets(10,10,10,10));
         filterPanel.setSpacing(10);
-        filterPanel.getChildren().addAll(resultLabel, filterCountLabel, filterInput, new Options());
+        filterPanel.getChildren().addAll(filterInput, new Options());
         
         HBox buttonPanel = new HBox();
+        HBox.setHgrow(buttonPanel, Priority.ALWAYS);
         buttonPanel.setAlignment(Pos.CENTER);
         buttonPanel.setStyle("-fx-background-color: black");
         buttonPanel.setPadding(new Insets(10,10,10,10));
         buttonPanel.setSpacing(5);
-        buttonPanel.getChildren().addAll(addButton, deleteButton);        
-        
+        buttonPanel.getChildren().addAll(addButton, deleteButton);      
+
         HBox options = new HBox();
+        HBox.setHgrow(options, Priority.ALWAYS);
         options.setAlignment(Pos.TOP_CENTER);
         options.setStyle("-fx-background-color: black");
         options.setPadding(new Insets(10,10,10,10));
         options.setSpacing(5);
         options.getChildren().addAll(new Options());
+		
+		HBox filteredValueHeaders = new HBox();
+        HBox.setHgrow(buttonPanel, Priority.ALWAYS);
+		filteredValueHeaders.setSpacing(15);
+		filteredValueHeaders.setAlignment(Pos.BOTTOM_CENTER);
+		filteredValueHeaders.getChildren().addAll(new HelperFunctions().textFunction("Filtered Hike Count", 20, true), 
+				new HelperFunctions().textFunction("Filtered Miles", 20, true), new HelperFunctions().textFunction("Filtered Days", 20, true), 
+				new HelperFunctions().textFunction("Filtered Hours", 20, true));
+		
+		HBox filteredValues = new HBox();
+        HBox.setHgrow(filteredValues, Priority.ALWAYS);
+        filteredValues.setAlignment(Pos.BOTTOM_CENTER);
+        filteredValues.setSpacing(120);
+        filteredValues.setPadding(new Insets(0,0,15,0));
+		filteredValues.getChildren().addAll(filterCountLabel, filterMilesLabel, filterDaysLabel, filterHoursLabel);
 
-        VBox vBox = new VBox();
-        VBox.setVgrow(vBox, Priority.ALWAYS);
-        vBox.getChildren().addAll(filterPanel,table, upperInputPanel, lowerInputPanel, buttonPanel);
-        pane.getChildren().add(vBox);
+		VBox master = new VBox();
+	    VBox.setVgrow(master, Priority.ALWAYS);
+	    master.setStyle("-fx-background-color: black");
+	    master.setAlignment(Pos.TOP_CENTER);
+        master.getChildren().addAll(filterPanel ,table,  filteredValueHeaders, filteredValues,upperInputPanel, lowerInputPanel, buttonPanel);
+
+        StackPane pane = new StackPane();
+        pane.getChildren().addAll(master);
 
         Scene scene = new Scene(pane);
         
@@ -298,6 +325,7 @@ public class Table  {
         window.setMinHeight(600);
         window.setScene(scene);
         window.show();
+        window.setMinWidth(1500);
         filterTextbox(filterInput);
     }
 
@@ -310,7 +338,7 @@ public class Table  {
 
         state = combo.getSelectionModel().getSelectedItem().toString();
         createStatePath(state);
-        refreshValuesForState(temp, state);
+        new HelperFunctions().refreshValuesForState(temp, state, totalMilesHiked, totalHoursHiked, totalMinutesHiked);
         new IO().loadStats(state);
 
         date = dp.getValue().toString().trim();
@@ -329,43 +357,17 @@ public class Table  {
       	StateDisplayTab.totalLifetimeMinutes = StateDisplayTab.totalLifetimeMinutes + minutes;
       	StateDisplayTab.totalLifetimeHours = StateDisplayTab.totalLifetimeHours + hours;
 
-        File path = new File("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\" + state + "\\" );
-        //if the path to the state table doesnt exists, save data, else load previous state data, that save it. 
-        if(!path.exists() && !path.isFile()) {
-
-	       	 path.mkdirs();
-
-        }
-        
+      	new HelperFunctions().createStatePath(state);
         additionConversion();
 		new IO().saveMasterTable(date, state, location, trailName, miles, hours, minutes);
 		new IO().saveStats(totalHikes, totalMilesHiked, totalMinutesHiked, totalHoursHiked, totalDaysHiked, totalMonthsHiked, totalYearsHiked);
 		new IO().saveLifetimeStats(StateDisplayTab.totalLifetimeHikes, StateDisplayTab.totalLifetimeMiles, StateDisplayTab.totalLifetimeMinutes, StateDisplayTab.totalLifetimeHours, 
    	        		StateDisplayTab.totalLifetimeDays, StateDisplayTab.totalLifetimeMonths, StateDisplayTab.totalLifetimeYears);
 
-   	    //---------------------------------------------
-		/*The IF checks for null statements from user. If null, a dialog appears, asking for estimated hiking speed.
-		That info is sent through algorithm to be displayed, added to STATS and then convert() is called to tally input 
-		else the input is displayed and tallied.
-		ELSE just set the table as usual */
-      	
-        if(hours  <= 0 && minutes <= 0) {
-         
-       	 Alerts.nullFields( miles, hours, minutes);
-        		}
-        
-        else {
-        	
-         setTable(hikeData);
-        }
+		new HelperFunctions().hoursMinutesNullCheck(hours, minutes, miles, hikeData, locationInput, trailNameInput, 
+				milesInput, hoursInput, minutesInput, lifetimeHikes );
+		dp.setValue(null); 
 
-        dp.setValue(null); 
-        locationInput.clear();
-        trailNameInput.clear();
-        milesInput.clear();
-        hoursInput.clear();
-        minutesInput.clear();
-        lifetimeHikes = 0;
 
     }
     
@@ -455,13 +457,7 @@ public class Table  {
       	StateDisplayTab.totalLifetimeMinutes = StateDisplayTab.totalLifetimeMinutes - data.getMinutes();
       	StateDisplayTab.totalLifetimeHours = StateDisplayTab.totalLifetimeHours - data.getHours();
       	
-        //If the path to the state table doesnt exists, save data, else load previous state data, that save it. 
-        File path = new File("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\" + state + "\\" );
-        if(!path.exists() && !path.isFile()) {
-
-	       	 path.mkdirs();
-
-        }
+      	new HelperFunctions().createStatePath(state);
 
         //Redo conversion for master totals for the modulus
 	    subtractionConversion();
@@ -480,7 +476,7 @@ public class Table  {
 
 	    	}
 
-	    	new IO().deleteTableSelection("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\masterTable.txt", table);
+	    	new IO().deleteTableSelection("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\temp\\masterTable.txt", table);
 	    	new IO().saveMasterTable(date, state, location, trailName, miles, hours, minutes);
         
     }
@@ -494,22 +490,7 @@ public class Table  {
         return hikeData;
     }
 
-    
-     // Method checks for regex patterns for the input fields, will not allow any input that does not meet the pattern.
- 	 public void inputCheck(TextField tf, String pattern) {
 
- 		tf.textProperty().addListener(new ChangeListener<String>() {
- 			    @Override
- 			    public void changed(ObservableValue<? extends String> observable, String oldValue, 
- 			        String newValue) {
- 			        if (!newValue.matches(pattern)) {
- 			            tf.setText(oldValue);
- 			        }
- 			    }
-
- 			}); 
- 	 }	 
- 	 
 	 // this is called in StatsDisplay to show stats
 	 public static void displayStats(Text hikes, Text miles, Text minutes, Text hours, Text days, Text months, Text years) {
 	 
@@ -541,18 +522,10 @@ public class Table  {
 
 	}
 
-
-	 // Method that creates tooltips	
-	 public void setToolTip(TextField tf, Tooltip t, String message){
-		
-		t = new Tooltip();
-		t.setText(message);
-		tf.setTooltip(t);
-		
-	}
-	
 	 public void filterTextbox(TextField t) {
-		   HikeData d = new HikeData();
+		   FilteredData filtered = new FilteredData();
+		   DecimalFormat numberFormat = new DecimalFormat("#.00");
+
 		   hikeDataList =  table.getItems();
 		   t.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
 		               if (oldValue != null && (newValue.length() < oldValue.length())) {
@@ -573,36 +546,56 @@ public class Table  {
 		               }
 	
 		              table.setItems(subentries);
-					d.setFilterCount(Integer.toString(table.getItems().size()));
-		          	filterCountLabel.textProperty().bindBidirectional(new SimpleStringProperty(d.getFilterCount()));
+		              filtered.setFilterCount(Integer.toString(table.getItems().size()));
+		          	filterCountLabel.textProperty().bindBidirectional(new SimpleStringProperty(filtered.getFilterCount()));
 
-					double total = 0;
+					int hours = 0;
+					int minutes = 0;
+		            int hoursTotal = 0;
+		            int days = 0;
+		            int mod = 0;
+					double milesTotal = 0;
+
 					for (HikeData item : table.getItems()) {
-						total = total + item.getMiles();
-						System.out.println(total);
-					}
-		              
-		       			System.out.print("Hike count at " +  table.getItems().size() +  "\n"); // i get amount of rows
-		           });
+						milesTotal = milesTotal + item.getMiles();
+						String formatedMiles = numberFormat.format(milesTotal);
+						filtered.setMilesCount(formatedMiles);
+			          	filterMilesLabel.textProperty().bindBidirectional(new SimpleStringProperty(filtered.getMilesCount()));
+			          	
+			          	 minutes = minutes + item.getMinutes();
+						 System.out.println("minutesTotal from get "+ minutes);
+						 
+						 mod = 60;
+						 while(minutes >= mod) {
 
+							 minutes = minutes - mod; 
+							 hoursTotal++; System.out.println(hoursTotal + " hours");
+			
+							}
+						
+						 hoursTotal = hoursTotal + item.getHours();
+		
+						 mod = 24;
+						 while(hoursTotal >= mod) {
+						 
+						 hoursTotal = hoursTotal - mod; 
+						 days++;
+						 }
+						 
+						 filtered.setHoursCount(Integer.toString(hoursTotal));
+						 filterHoursLabel.textProperty().bindBidirectional(new SimpleStringProperty(filtered.getHoursCount()));
+						 
+						 filtered.setDaysCount(Integer.toString(days));
+						 filterDaysLabel.textProperty().bindBidirectional(new SimpleStringProperty(filtered.getDaysCount()));
+
+						}// for
+				});
 		   }	 
-
-	 // if user selects a different state while still using the same instance of Table, this will clear the values. 
-	 public void refreshValuesForState(String temp, String state) {
-		 
-		 if(!temp.equals(state)){
-			 
-      	   totalMilesHiked = 0;
-             totalHoursHiked = 0;
-             totalMinutesHiked = 0;
-
-      }
-	 }
 
 	 //if a path to state isn't already created, this will create one. 
 	 public static void createStatePath(String state) {
 		 
-		   File dir = new File("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\" + state +"\\" );
+		   File dir = new File("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\temp\\" + state +"\\" );
 	        dir.mkdirs();
 	        File tmp = new File(dir, "Stats for " + state + ".txt");
 	        try {
