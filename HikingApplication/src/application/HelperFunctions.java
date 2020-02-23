@@ -9,6 +9,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -104,5 +106,40 @@ public class HelperFunctions{
 		tf.setTooltip(t);
 		
 	}
+	 
+	 public void disableFields(TextField filterInput, TextField location, TextField trailname, TextField miles, TextField hours, TextField minutes, DatePicker dp, ComboBox<String> combo ) {
+		 
+		 
+		 if( filterInput.getLength() >= 1) {
+		 
+			 location.setDisable(true); trailname.setDisable(true); miles.setDisable(true); hours.setDisable(true); minutes.setDisable(true); dp.setDisable(true); combo.setDisable(true);
+		 }
+		 
+		 if(filterInput.getLength() < 1){
+			 
+			 location.setDisable(false); trailname.setDisable(false); miles.setDisable(false); hours.setDisable(false); minutes.setDisable(false); dp.setDisable(false); combo.setDisable(false);
+		 }
+		 
+	 }
+	 
+	 public int hoursConversion(HikeData item) {
+		 int hoursTotal = 0;
+		 int minutes = 0;
+		 int mod = 0;
+		 
+		 minutes = minutes + item.getMinutes();
+			System.out.println("minutesTotal from get "+ minutes);
+
+			mod = 60;
+			while (minutes >= mod) {
+
+				minutes = minutes - mod;
+				hoursTotal++;  System.out.println(hoursTotal + " hours before get ");
+
+			}
+			hoursTotal = hoursTotal + item.getHours();
+
+		 return hoursTotal;
+	 }
 
 }

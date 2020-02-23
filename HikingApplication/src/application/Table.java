@@ -122,8 +122,6 @@ public class Table  {
         
 //ComboBox
         new ComboBoxFilter<>(combo);
-		//sets focus to false so that you can see prompt text
-		//combo.setFocusTraversable(false);
 		
 		//if you click the window the focus will be set to true, so that you can enter your state
 		window.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -533,23 +531,24 @@ public class Table  {
 		               }
 		               String value = newValue.toLowerCase();
 		                subentries = FXCollections.observableArrayList();
+				  		   new HelperFunctions ().disableFields(filterInput, locationInput, trailNameInput, milesInput, hoursInput, minutesInput, dp, combo);
 
 		               long count = table.getColumns().stream().count();
 		               for (int i = 0; i < table.getItems().size(); i++) {
-		                   for (int j = 0; j < count; j++) {
+		                   for (int j = 0; j < count; j++) { 
 		                       String entry = "" + table.getColumns().get(j).getCellData(i);
 		                       if (entry.toLowerCase().contains(value)) {
-		                           subentries.add(table.getItems().get(i));
-		                           break;
-		                       }
-		                   }
-		               }
-	
+		                           subentries.add(table.getItems().get(i)); 
+		                       
+		                           break; 
+		                          }//if                   
+		                   } //2nd for 	
+
+		               }//1st for   	
 		              table.setItems(subentries);
 		              filtered.setFilterCount(Integer.toString(table.getItems().size()));
 		          	filterCountLabel.textProperty().bindBidirectional(new SimpleStringProperty(filtered.getFilterCount()));
 
-					int hours = 0;
 					int minutes = 0;
 		            int hoursTotal = 0;
 		            int days = 0;
@@ -563,13 +562,12 @@ public class Table  {
 			          	filterMilesLabel.textProperty().bindBidirectional(new SimpleStringProperty(filtered.getMilesCount()));
 			          	
 			          	 minutes = minutes + item.getMinutes();
-						 System.out.println("minutesTotal from get "+ minutes);
 						 
 						 mod = 60;
 						 while(minutes >= mod) {
 
 							 minutes = minutes - mod; 
-							 hoursTotal++; System.out.println(hoursTotal + " hours");
+							 hoursTotal++; 
 			
 							}
 						
@@ -581,7 +579,9 @@ public class Table  {
 						 hoursTotal = hoursTotal - mod; 
 						 days++;
 						 }
-						 
+						 System.out.println(filterInput.getLength());
+					      	   
+					  	
 						 filtered.setHoursCount(Integer.toString(hoursTotal));
 						 filterHoursLabel.textProperty().bindBidirectional(new SimpleStringProperty(filtered.getHoursCount()));
 						 
@@ -589,7 +589,8 @@ public class Table  {
 						 filterDaysLabel.textProperty().bindBidirectional(new SimpleStringProperty(filtered.getDaysCount()));
 
 						}// for
-				});
+				}); 
+		       
 		   }	 
 
 	 //if a path to state isn't already created, this will create one. 
@@ -610,6 +611,4 @@ public class Table  {
 	 static public String comboSelection() {
 		 	 
 		 return combo.getSelectionModel().getSelectedItem().toString();
-	 }
-		
-}// EOC
+	 }}// EOC
