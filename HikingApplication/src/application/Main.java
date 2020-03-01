@@ -45,7 +45,6 @@ public class Main extends Application {
 
 		//Chooses random photos for load screen.
 
-
 		File[] files = dir.listFiles();
 		Random rand = new Random();
 		File file = files[rand.nextInt(files.length)];
@@ -94,21 +93,17 @@ public class Main extends Application {
 			t.deleteButton.setDisable(true);
 
 			homeFolder.mkdirs();
-
-
 		}
 
 		else   {	
 			Table t;
 			t = new Table();
-			if(Table.miles == 0) {
-
-				t.deleteButton.setDisable(true);
-				//t.statsButton.setDisable(true);
-
-			}
 			io.loadMasterTable();
-			io.loadLifetimeStats();
+			if(Table.hikeData.size() == 0) {
+				t.deleteButton.setDisable(true);
+			}
+			else { t.deleteButton.setDisable(false);}
+			new HelperFunctions().filterConversions(Table.table, t.totalMilesLabel, t.totalHoursLabel, t.totalDaysLabel, t.totalCountLabel);
 
 		}
 
@@ -117,11 +112,11 @@ public class Main extends Application {
 
 	public void createImageFolder() {
 
-		File homeFolder = new File("C:\\Users\\" + System.getProperty("user.name") + "\\JustHike\\Load_Screen_Images");
+		File imageFolder = new File("C:\\Users\\" + System.getProperty("user.name") + "\\JustHike\\Load_Screen_Images");
 
-		if(!homeFolder.exists() && !homeFolder.isFile()) {
+		if(!imageFolder.exists() && !imageFolder.isFile()) {
 
-			homeFolder.mkdirs();
+			imageFolder.mkdirs();
 
 		}
 	}

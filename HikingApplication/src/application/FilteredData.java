@@ -6,44 +6,44 @@ import javafx.beans.property.StringProperty;
 public class FilteredData {
 	
 	 // Define a variable to store the property
-    private StringProperty filterCount = new SimpleStringProperty();
-    private StringProperty milesCount = new SimpleStringProperty();
-    private StringProperty daysCount = new SimpleStringProperty();
-    private StringProperty hoursCount = new SimpleStringProperty();
+    private StringProperty totalCount = new SimpleStringProperty();
+    private StringProperty totalMilesCount = new SimpleStringProperty();
+    private StringProperty totalDaysCount = new SimpleStringProperty();
+    private StringProperty totaHoursCount = new SimpleStringProperty();
  
     // Define a getter for the property's value
-    public final String getFilterCount(){return filterCount.get();}
+    public final String getFilterCount(){return totalCount.get();}
  
     // Define a setter for the property's value
-    public final void setFilterCount(String string){filterCount.set(string);}
+    public final void setFilterCount(String string){totalCount.set(string);}
  
      // Define a getter for the property itself
-    public StringProperty filterCountProperty() {return filterCount;}
+    public StringProperty filterCountProperty() {return totalCount;}
     //-----------------
     // Define a getter for the property's value
-    public final String getMilesCount(){return milesCount.get();}
+    public final String getMilesCount(){return totalMilesCount.get();}
  
     // Define a setter for the property's value
-    public final void setMilesCount(String string){milesCount.set(string);}
+    public final void setMilesCount(String string){totalMilesCount.set(string);}
  
      // Define a getter for the property itself
-    public StringProperty milesrCountProperty() {return milesCount;}
+    public StringProperty milesrCountProperty() {return totalMilesCount;}
     //-------------------
-    public final String getDaysCount(){return daysCount.get();}
+    public final String getDaysCount(){return totalDaysCount.get();}
     
     // Define a setter for the property's value
-    public final void setDaysCount(String string){daysCount.set(string);}
+    public final void setDaysCount(String string){totalDaysCount.set(string);}
  
      // Define a getter for the property itself
-    public StringProperty daysCountProperty() {return daysCount;}
+    public StringProperty daysCountProperty() {return totalDaysCount;}
     //----------------------------
-    public final String getHoursCount(){return hoursCount.get();}
+    public final String getHoursCount(){return totaHoursCount.get();}
     
     // Define a setter for the property's value
-    public final void setHoursCount(String string){hoursCount.set(string);}
+    public final void setHoursCount(String string){totaHoursCount.set(string);}
  
      // Define a getter for the property itself
-    public StringProperty hoursCountProperty() {return hoursCount;}
+    public StringProperty hoursCountProperty() {return totaHoursCount;}
     
 
 }
