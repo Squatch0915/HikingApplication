@@ -1,12 +1,9 @@
 package application;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -325,7 +322,6 @@ public class Table  {
 		String temp = "";
     	HikeData hikeData = new HikeData();
 
-
 		state = combo.getSelectionModel().getSelectedItem().toString();
 		new HelperFunctions().refreshValuesForState(temp, state, totalMilesHiked, totalHoursHiked, totalMinutesHiked);
 
@@ -380,22 +376,6 @@ public class Table  {
 		return hikeData;
 	}
 
-
-	// this is called in StatsDisplay to show stats
-	public static void displayStats(Text hikes, Text miles, Text minutes, Text hours, Text days, Text months, Text years) {
-
-		DecimalFormat milesFormat = new DecimalFormat("#.0");
-
-		hikes.setText(Integer.toString(totalHikes));
-		miles.setText(milesFormat.format(totalMilesHiked)); 
-		minutes.setText(Integer.toString(totalMinutesHiked));
-		hours.setText(Integer.toString(totalHoursHiked));
-		days.setText(Integer.toString(totalDaysHiked));
-		months.setText(Integer.toString(totalMonthsHiked));
-		years.setText(Integer.toString(totalYearsHiked));
-
-	}
-
 	//puts variables into the table
 	public static void setTable(HikeData hikeData) {
 
@@ -438,7 +418,4 @@ public class Table  {
 		}); 
 	}	 
 
-	static public String comboSelection() {
-
-		return combo.getSelectionModel().getSelectedItem().toString();
-	}}// EOC
+	}// EOC

@@ -24,8 +24,7 @@ public class IO {
 	Writer writer = null;
 	HikeData d = new HikeData();
 
-	public void saveMasterTable(String date, String state, String location, String trailName, double miles, int hours,
-			int minutes) {
+	public void saveMasterTable(String date, String state, String location, String trailName, double miles, int hours, int minutes) {
 
 		HikeData data = new HikeData();
 
@@ -33,10 +32,9 @@ public class IO {
 
 			FileWriter fw = new FileWriter(masterTablePath);
 			PrintWriter pw = new PrintWriter(fw);
+
 			for (int i = 0; i < Table.hikeData.size(); i++) {
-
 				data = Table.hikeData.get(i);
-
 				pw.println(data.getDate());
 				pw.println(data.getState());
 				pw.println(data.getLocation());
@@ -44,8 +42,8 @@ public class IO {
 				pw.println(data.getMiles());
 				pw.println(data.getHours());
 				pw.println(data.getMinutes());
-
 			}
+	
 			pw.close();
 		} catch (IOException e) {
 
@@ -59,6 +57,7 @@ public class IO {
 			FileReader fr = new FileReader(masterTablePath);
 			BufferedReader br = new BufferedReader(fr);
 			Scanner scan = new Scanner(fr);
+			
 			while (scan.hasNextLine()) {
 				HikeData readData = new HikeData();
 
@@ -69,10 +68,7 @@ public class IO {
 				Table.miles = scan.nextDouble();
 				Table.hours = scan.nextInt();
 				Table.minutes = scan.nextInt();
-				// System.out.println("here");
-				// System.out.println("Date: " + date + "\nlocation: " +location + "\nTrailname:
-				// " +trailName +"\nmiles: " +miles + "\nhours: " +hours + "\nminutes: " +
-				// minutes);
+
 				scan.nextLine(); // ignore the result
 				readData = new HikeData(Table.date, Table.state, Table.location, Table.trailName, Table.miles,
 						Table.hours, Table.minutes);
