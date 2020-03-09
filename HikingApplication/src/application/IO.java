@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 public class IO {
 
 	static String userProfile = System.getProperty("user.name");
-	String masterTablePath = "C:\\Users\\" + userProfile + "\\JustHike\\JustHike\\temp\\masterTable.txt";
+	String masterTablePath = "C:\\Users\\" + userProfile + "\\JustHike\\JustHike\\masterTable.txt";
 
 	Writer writer = null;
 	HikeData d = new HikeData();

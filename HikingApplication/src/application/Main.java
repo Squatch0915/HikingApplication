@@ -1,12 +1,16 @@
 package application;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.net.URL;
-
+import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -23,7 +27,7 @@ public class Main extends Application {
 	private Scene scene;
 	StackPane pane = new StackPane();
 	String userProfile = System.getProperty("user.name");
-	final File dir = new File("C:\\Users\\"+userProfile+"\\JustHike\\Load_Screen_Images");
+	ImageView v = new ImageView();
 
 	
 	public static void main(String[] args) {
@@ -44,30 +48,35 @@ public class Main extends Application {
 
 
 		//Chooses random photos for load screen.
-
-		File[] files = dir.listFiles();
-		Random rand = new Random();
-		File file = files[rand.nextInt(files.length)];
-		String imagePath = file.toURI().toURL().toExternalForm();
-		Image img = new Image(imagePath);
-
-		System.out.println("Using photo " + imagePath);
-
-		ImageView v = new ImageView();
-		v.setImage(img);
-		v.autosize();
-		v.setFitWidth(900);
-		v.setFitHeight(600);
-
-		v.setPreserveRatio(true);
-
-		pane.getChildren().addAll(v);
+		File dir = new File("C:\\Users\\"+userProfile+"\\JustHike\\temp\\Load_Screen_Images");
+		
+		/* if(dir != null) { */
+			File[] files = dir.listFiles();
+			Random rand = new Random();
+			File file = files[rand.nextInt(files.length)];
+			String imagePath = file.toURI().toURL().toExternalForm();
+			System.out.println("Using photo " + imagePath);
+			
+			javaxt.io.Image img = new javaxt.io.Image(file);
+			img.rotate();
+			img.sharpen();
+	
+		    Image image = SwingFXUtils.toFXImage(img.getBufferedImage(), null);
+		    
+			v.setImage(image);
+			v.autosize();
+			v.setFitWidth(900);
+			v.setFitHeight(600);
+			v.setPreserveRatio(true);
+			v.setSmooth(true);
+			v.setCache(true);
+	
+			pane.getChildren().addAll(v);
 
 		VBox layout = new VBox();
 		layout.setSpacing(120);
 		layout.getChildren().addAll(pane);
 
-		//scene = new Scene(layout, 900,600);
 		scene = new Scene(layout);
 
 		window.setScene(scene);
@@ -84,7 +93,7 @@ public class Main extends Application {
 	public void createPaths(Stage window) {
 		IO io = new IO();
 
-		File homeFolder = new File("C:\\Users\\" + userProfile + "\\JustHike\\JustHike\\temp");
+		File homeFolder = new File("C:\\Users\\" + userProfile + "\\JustHike\\JustHike\\temp\\");
 
 		if(!homeFolder.exists() && !homeFolder.isFile()) {
 
@@ -110,14 +119,27 @@ public class Main extends Application {
 		window.close();
 	}
 
-	public void createImageFolder() {
-
-		File imageFolder = new File("C:\\Users\\" + System.getProperty("user.name") + "\\JustHike\\Load_Screen_Images");
+	public void createImageFolder() throws IOException {
+		   
+		File imageFolder = new File("C:\\Users\\" + System.getProperty("user.name") + "\\JustHike\\temp\\Load_Screen_Images");
 
 		if(!imageFolder.exists() && !imageFolder.isFile()) {
-
 			imageFolder.mkdirs();
+			
+			File file = new File(getClass().getClassLoader().getResource("trail.jpg").getFile());
+			String k = file.toURI().toURL().toExternalForm();
+			Image image = new Image(k);
 
+			
+			 File outputFile = new File("C:\\Users\\" + System.getProperty("user.name") + "\\JustHike\\temp\\Load_Screen_Images\\Images");
+			    BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
+			    try {
+			      ImageIO.write(bImage, "jpg", outputFile.getAbsoluteFile());
+			    } catch (IOException e) {
+			      throw new RuntimeException(e);
+			    }
+			  
+	 
 		}
 	}
 }

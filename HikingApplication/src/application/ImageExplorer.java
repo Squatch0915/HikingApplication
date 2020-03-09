@@ -27,7 +27,7 @@ public class ImageExplorer {
 		if(multiplePhotos != null) {
 
 			for(int i=0; i<multiplePhotos.size(); i++){
-				Path image_Store_Folder = Paths.get("C:\\Users\\jlrog\\JustHike\\Load_Screen_Images\\" + multiplePhotos.get(i).getName());
+				Path image_Store_Folder = Paths.get("C:\\Users\\jlrog\\JustHike\\Load_Screen_Images\\Images" + multiplePhotos.get(i).getName());
 				try {
 					Files.copy(multiplePhotos.get(i).toPath(), image_Store_Folder);
 				} catch (IOException e) {

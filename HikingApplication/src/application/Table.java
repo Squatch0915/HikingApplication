@@ -42,7 +42,7 @@ public class Table  {
 	static int hikes, hours, minutes, days, months , years, lifetimeHikes = 0;
 	static String state, date, location, trailName;
 	static double totalMilesHiked, displayMiles, miles;
-	static int totalHikes, totalMinutesHiked, totalHoursHiked, totalDaysHiked, totalMonthsHiked, totalYearsHiked;
+	//static int totalHikes, totalMinutesHiked, totalHoursHiked, totalDaysHiked, totalMonthsHiked, totalYearsHiked;
 	static HikeData data;
 	DatePicker dp;
 	static String userProfile = System.getProperty("user.name");
@@ -131,8 +131,9 @@ public class Table  {
 				, "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska",  "Nevada", "New Hampshire", "New Jersery", "New Mexico"
 				, "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina"
 				, "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming");
-		//combo.getSelectionModel().select(48);		
 
+		//----Input Fields------
+		
 		//Date Picker 
 		dp = new DatePicker();
 		dp.setPromptText("Date Field");
@@ -186,9 +187,8 @@ public class Table  {
 				.or(Bindings.isEmpty(hoursInput.textProperty()))
 				.or(Bindings.isEmpty(minutesInput.textProperty()))
 				);
-		//-- Action for Add Button.  Here the a method is called for different operations from addButtonClicked method and saving the stats and table are done
-
-
+		
+		//-- Action for Add Button. 
 		addButton.setOnAction(e ->{
 
 			addButtonClicked();
@@ -319,23 +319,17 @@ public class Table  {
 	// Save input and set it to the table
 	public void addButtonClicked(){
 
-		String temp = "";
     	HikeData hikeData = new HikeData();
 
 		state = combo.getSelectionModel().getSelectedItem().toString();
-		new HelperFunctions().refreshValuesForState(temp, state, totalMilesHiked, totalHoursHiked, totalMinutesHiked);
-
 		date = dp.getValue().toString().trim();
 		location = locationInput.getText().trim();
 		trailName = trailNameInput.getText().trim();
 		miles = Double.parseDouble(milesInput.getText().trim());
 		minutes = Integer.parseInt(minutesInput.getText().trim());
 		hours = Integer.parseInt(hoursInput.getText().trim());
-
-		totalHikes = totalHikes + lifetimeHikes;
-		totalMilesHiked = totalMilesHiked + miles;
-		totalHoursHiked = totalHoursHiked + hours;
-		totalMinutesHiked = totalMinutesHiked + minutes;
+		//Must set table to HikeData list again, if not sub-entries could create error with adding hikes. 
+		table.setItems(hikeDataList);
 		
 		setTable(hikeData);
 
@@ -415,6 +409,7 @@ public class Table  {
 			}  	
 			table.setItems(subentries);
 			new HelperFunctions().filterConversions(table, totalMilesLabel, totalHoursLabel, totalDaysLabel, totalCountLabel);
+
 		}); 
 	}	 
 

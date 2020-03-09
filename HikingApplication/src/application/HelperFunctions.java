@@ -35,19 +35,6 @@ public class HelperFunctions {
 		});
 	}
 
-	// if user selects a different state while still using the same instance of
-	// Table, this will clear the values.
-	public void refreshValuesForState(String temp, String state, double totalMilesHiked, int totalHoursHiked,
-			int totalMinutesHiked) {
-
-		if (!temp.equals(state)) {
-
-			totalMilesHiked = 0;
-			totalHoursHiked = 0;
-			totalMinutesHiked = 0;
-		}
-	}
-
 	// textFunction
 	public Text textFunction(String text, int fontSize, boolean underline) {
 		Text t = new Text(text);
