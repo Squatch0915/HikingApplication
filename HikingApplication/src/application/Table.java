@@ -41,15 +41,11 @@ public class Table  {
 	Button addButton, deleteButton;
 	static int hikes, hours, minutes, days, months , years, lifetimeHikes = 0;
 	static String state, date, location, trailName;
-	static double totalMilesHiked, displayMiles, miles;
-	//static int totalHikes, totalMinutesHiked, totalHoursHiked, totalDaysHiked, totalMonthsHiked, totalYearsHiked;
+	static double miles;
 	static HikeData data;
 	DatePicker dp;
-	static String userProfile = System.getProperty("user.name");
-	static ComboBox<String> combo = new ComboBox<String>();
-	static String stateCSV;
+	ComboBox<String> combo = new ComboBox<String>();
 	Text totalCountLabel, totalMilesLabel, totalDaysLabel, totalHoursLabel;
-
 
 	@SuppressWarnings("unchecked")
 	public Table(){
@@ -126,7 +122,7 @@ public class Table  {
 
 		//Combo box that will get the selected state and store it in a static String variable to be use as the Table header. 
 
-		combo.getItems().addAll("All", "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida"
+		combo.getItems().addAll("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida"
 				, "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts"
 				, "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska",  "Nevada", "New Hampshire", "New Jersery", "New Mexico"
 				, "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina"
@@ -348,8 +344,8 @@ public class Table  {
 
 	//Delete button clicked
 	public void deleteButtonClicked() throws IOException{
-	
-		new IO().deleteTableSelection("C:\\Users\\" + userProfile +"\\JustHike\\JustHike\\temp\\masterTable.txt", table);
+		
+		new IO().deleteTableSelection("C:\\Users\\" + System.getProperty("user.name") +"\\JustHike\\masterTable.txt", table);
 		new IO().saveMasterTable(date, state, location, trailName, miles, hours, minutes);
 		
 		if (Table.hikeData.size() == 0 ) {
@@ -371,7 +367,7 @@ public class Table  {
 	}
 
 	//puts variables into the table
-	public static void setTable(HikeData hikeData) {
+	public void setTable(HikeData hikeData) {
 
 		hikeData.setState(state);	
 		hikeData.setDate(date);

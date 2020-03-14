@@ -23,11 +23,11 @@ public class Options extends ComboBox<String> {
 	}
 
 	public void getChoice(String choice) {
-
+		HikeData h = new HikeData();
 		if (choice == "Create CSV") {
 
 			try {
-				new IO().saveCSV(Table.date, Table.location, Table.trailName, Table.miles, Table.subentries);
+				new IO().saveCSV(h.getDate(), h.getLocation(), h.getTrailName(), h.getMiles(), Table.subentries);
 			} catch (IOException e1) {
 
 				e1.printStackTrace();

@@ -48,9 +48,8 @@ public class Main extends Application {
 
 
 		//Chooses random photos for load screen.
-		File dir = new File("C:\\Users\\"+userProfile+"\\JustHike\\temp\\Load_Screen_Images");
+		File dir = new File("C:\\Users\\"+userProfile+"\\JustHike\\Load_Screen_Images");
 		
-		/* if(dir != null) { */
 			File[] files = dir.listFiles();
 			Random rand = new Random();
 			File file = files[rand.nextInt(files.length)];
@@ -93,8 +92,11 @@ public class Main extends Application {
 	public void createPaths(Stage window) {
 		IO io = new IO();
 
-		File homeFolder = new File("C:\\Users\\" + userProfile + "\\JustHike\\JustHike\\temp\\");
-
+		/*
+		 * File homeFolder = new
+		 * File("C:\\Users\\" + userProfile + "\\JustHike\\JustHike\\temp\\");
+		 */
+		File homeFolder = new File("C:\\Users\\" + userProfile + "\\JustHike\\");
 		if(!homeFolder.exists() && !homeFolder.isFile()) {
 
 			Table t;
@@ -121,7 +123,7 @@ public class Main extends Application {
 
 	public void createImageFolder() throws IOException {
 		   
-		File imageFolder = new File("C:\\Users\\" + System.getProperty("user.name") + "\\JustHike\\temp\\Load_Screen_Images");
+		File imageFolder = new File("C:\\Users\\" + System.getProperty("user.name") + "\\JustHike\\Load_Screen_Images");
 
 		if(!imageFolder.exists() && !imageFolder.isFile()) {
 			imageFolder.mkdirs();
@@ -131,7 +133,7 @@ public class Main extends Application {
 			Image image = new Image(k);
 
 			
-			 File outputFile = new File("C:\\Users\\" + System.getProperty("user.name") + "\\JustHike\\temp\\Load_Screen_Images\\Images");
+			 File outputFile = new File("C:\\Users\\" + System.getProperty("user.name") + "\\JustHike\\Load_Screen_Images\\Images");
 			    BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
 			    try {
 			      ImageIO.write(bImage, "jpg", outputFile.getAbsoluteFile());
