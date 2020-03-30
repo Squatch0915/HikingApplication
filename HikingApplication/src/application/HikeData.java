@@ -15,7 +15,6 @@ public class HikeData implements Serializable{
 	private String date;
 	private String location;
 	private String trailName;
-	private int hikeCounter;
     private double miles;
     private int hours;
     private int minutes;
@@ -24,7 +23,6 @@ public class HikeData implements Serializable{
     private int years;
 
     public HikeData(){
-    	this.hikeCounter = 0;
     	this.state="";
     	this.date ="";   
     	this.location = "";
@@ -39,9 +37,8 @@ public class HikeData implements Serializable{
   
     }
 
-    public HikeData(int hikeCounter,double miles, int minutes, int hours, int days, int months, int years ){
+    public HikeData(double miles, int minutes, int hours, int days, int months, int years ){
 
-    	this.hikeCounter = hikeCounter;
         this.miles = miles;
         this.minutes = minutes;
         this.hours = hours;
@@ -60,14 +57,6 @@ public class HikeData implements Serializable{
         this.minutes = minutes;
         this.hours = hours;
     }
-    
-	public int getHikeCounter() {
-		return hikeCounter;
-	}
-
-	public void setHikeCounter(int hikeCounter) {
-		this.hikeCounter = hikeCounter;
-	}
     
 	public String getState() {
 		return state;
